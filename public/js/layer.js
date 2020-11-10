@@ -64,6 +64,6 @@ if(!sessionStorage.getItem("informed")) {
       }
     }
   };
-  httpRequest.open('GET', 'model/data/info.txt', true);
+  httpRequest.open('GET', '../data/info.txt', true);
   httpRequest.send();
 }

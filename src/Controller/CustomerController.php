@@ -18,4 +18,24 @@ class CustomerController extends AbstractController
             'controller_name' => 'CustomerController',
         ]);
     }
+
+    /**
+     * @Route("/blog", name="blog")
+     */
+    public function blog(): Response
+    {
+        return $this->render('customer/blog.html.twig', [
+            'controller_name' => 'CustomerController',
+        ]);
+    }
+
+    /**
+     * @Route("/statistiques", name="stats")
+     */
+    public function stats(): Response
+    {
+        return $this->render('customer/stats.html.twig', [
+            'controller_name' => 'CustomerController',
+        ]);
+    }
 }
