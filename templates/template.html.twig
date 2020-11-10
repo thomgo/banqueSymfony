@@ -1,0 +1,54 @@
+{% extends 'base.html.twig'%}
+
+{% block body %}
+  <nav class="navbar navbar-expand-lg bg-info fixed-top">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link text-white" href="index.php">Accueil</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link text-white dropdown-toggle" href="#" id="operations" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Opération
+          </a>
+          <div class="dropdown-menu" aria-labelledby="operations">
+            <a class="dropdown-item" href="addCount.php">Nouveau compte</a>
+            <a class="dropdown-item" href="operation.php">Retrait/depôt</a>
+            <a class="dropdown-item" href="transfer.php">Virement</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="statistic.php">Statistiques</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="blog.php">Actualités</a>
+        </li>
+      </ul>
+    </div>
+    <aside class="text-white">
+      <a href='logout.php' class='btn btn-secondary mx-1'>Deconnexion</a>
+    </aside>
+  </nav>
+
+  <header class="jumbotron jumbotron-fluid bg-light mt-5">
+    <section class="container">
+      <h1 class="display-4 border-info border-bottom">Les frères rape-tout</h1>
+      <p class="lead">L'argent est un problème, on vous en débarasse</p>
+    </section>
+  </header>
+
+  <main class="container">
+    {% block main %}
+    {% endblock %}
+  </main>
+
+
+  <footer class="jumbotron jumbotron-fluid mt-5 mb-0 bg-secondary text-white text-center">
+    <section class="container">
+      <p>Une application développée par les frères rape-tout, tous droits réservés.</p>
+    </section>
+  </footer>
+{% endblock %}
