@@ -29,7 +29,11 @@
       </ul>
     </div>
     <aside class="text-white">
-      <a href='logout.php' class='btn btn-secondary mx-1'>Deconnexion</a>
+      {% if app.user %}
+        <a href='{{path("app_logout")}}' class='btn btn-secondary mx-1'>Deconnexion</a>
+      {% else %}
+        <a href='{{path("app_login")}}' class='btn btn-secondary mx-1'>Connexion</a>
+      {% endif %}
     </aside>
   </nav>
 
