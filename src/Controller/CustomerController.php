@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use App\Repository\AccountRepository;
 use App\Entity\Account;
 
 /**
@@ -27,9 +28,9 @@ class CustomerController extends AbstractController
     /**
      * @Route("/account/{id}", name="single", requirements={"id"="\d+"})
      */
-    public function single(Account $account): Response
+    public function single(int $id, AccountRepository $accountRepository): Response
     {
-        dump($account);
+        $account = $accountRepository->getAccount($id, $this->getUser());
         return $this->render('customer/single.html.twig', [
           "account" => $account
         ]);
