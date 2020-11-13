@@ -25,7 +25,7 @@ class OperationFixtures extends Fixture implements DependentFixtureInterface
         $operation = new Operation();
         $operation->setAmount($this->faker->randomFloat($nbMaxDecimals = 2, $min = -1000, $max = 1000));
         $operation->setType($types[array_rand($types)]);
-        $operation->setRegisteringDate(new \DateTime('now'));
+        $operation->setRegisteringDate($this->faker->dateTimeBetween($startDate = '-1 year', $endDate = 'now', $timezone = "Europe/Paris"));
         $operation->setLabel($this->faker->sentence($nbWords = 5, $variableNbWords = true));
         $account = "account" . mt_rand(0, 9);
         $operation->setAccount($this->getReference($account));
