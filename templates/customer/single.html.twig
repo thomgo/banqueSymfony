@@ -1,0 +1,54 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block main %}
+  <h2>Détails du compte</h2>
+  <div class="row mt-5">
+      <div class="col-12 col-md-6 col-lg-4">
+        <article class="card">
+          <div class="card-header">
+            <h5 class="card-title">{{account.type}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Numéro de compte : {{account.id}}</h6>
+          </div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush border-bottom mb-2">
+              <li class="list-group-item">Propriétaire : {{ app.user.firstname ~ " " ~ app.user.lastname }}</li>
+              <li class="list-group-item">Solde : {{account.amount}}</li>
+              <li class="list-group-item">Date d'ouverture : {{account.openingDate | date("d-m-Y")}}</li>
+            </ul>
+            <a href="#" class="btn btn-info">Clôturer</a>
+            <a href="operation.php" class="btn btn-info">Dépot/retrait</a>
+          </div>
+        </article>
+      </div>
+      <div class="col-12 col-md-6 col-lg-8">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Label</th>
+              <th scope="col">Date</th>
+              <th scope="col">Type</th>
+              <th scope="col">Montant</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for operation in account.operations %}
+              <tr>
+                <th>{{ operation.id }}</th>
+                <td>{{ operation.label }}</td>
+                <td>{{ operation.registeringDate | date("d-m-Y H:i")}}</td>
+                <td>{{ operation.type }}</td>
+                <td>{{ operation.amount }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+  <script src="{{asset('js/layer.js')}}"></script>
+{% endblock %}

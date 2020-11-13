@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use App\Entity\Account;
 
 /**
 *@IsGranted("IS_AUTHENTICATED_FULLY")
@@ -19,7 +20,18 @@ class CustomerController extends AbstractController
     public function index(): Response
     {
         return $this->render('customer/index.html.twig', [
-            
+
+        ]);
+    }
+
+    /**
+     * @Route("/account/{id}", name="single", requirements={"id"="\d+"})
+     */
+    public function single(Account $account): Response
+    {
+        dump($account);
+        return $this->render('customer/single.html.twig', [
+          "account" => $account
         ]);
     }
 
