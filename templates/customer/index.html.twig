@@ -3,8 +3,33 @@
 {% block title %}Accueil{% endblock %}
 
 {% block main %}
-  <h2>Accueil</h2>
-{% endblock %}
+  <h2>Vos comptes bancaires</h2>
+  <div class="row">
+    {% for account in app.user.accounts %}
+      <div class="col-12 col-md-6 col-lg-4 my-2">
+      <article class="card">
+        <div class="card-header">
+          <h5 class="card-title">{{account.type}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Numéro de compte : {{account.id}}</h6>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush border-bottom mb-2">
+            <li class="list-group-item">Propriétaire : {{ app.user.firstname ~ " " ~ app.user.lastname }}</li>
+            <li class="list-group-item">Solde : {{account.amount}}</li>
+            <li class="list-group-item">
+              Dernière opération :
+
+            </li>
+          </ul>
+          <a href="#" class="btn btn-info">Côturer</a>
+          <a href="operation.php" class="btn btn-info">Dépot/retrait</a>
+          <a href="" class="btn btn-info">Voir</a>
+        </div>
+      </article>
+    </div>
+    {% endfor %}
+  </div>
+  {% endblock %}
 
 {% block javascripts %}
   <script src="{{asset('js/layer.js')}}"></script>
