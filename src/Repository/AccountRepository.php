@@ -24,7 +24,7 @@ class AccountRepository extends ServiceEntityRepository
     public function getAccount(int $id, User $user): ?Account
     {
         return $this->createQueryBuilder('a')
-            ->innerJoin("a.operations", "o")
+            ->leftJoin("a.operations", "o")
             ->addSelect("o")
             ->where('a.id = :id')
             ->andWhere('a.user = :user')

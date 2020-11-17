@@ -34,7 +34,6 @@ class CustomerController extends AbstractController
      */
     public function single(int $id, AccountRepository $accountRepository): Response
     {
-        // Do not request account without ope
         $account = $accountRepository->getAccount($id, $this->getUser());
         return $this->render('customer/single.html.twig', [
           "account" => $account
