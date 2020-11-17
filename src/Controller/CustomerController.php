@@ -37,6 +37,32 @@ class CustomerController extends AbstractController
     }
 
     /**
+     * @Route("/account/delete/{id}", name="account_delete", requirements={"id"="\d+"})
+     */
+    public function account_delete(int $id, AccountRepository $accountRepository): Response
+    {
+        try {
+          $account = $accountRepository->findOneBy([
+            "id" => $id,
+            "user" => $this->getUser()
+          ]);
+          $entityManager = $this->getDoctrine()->getManager();
+          $entityManager->remove($account);
+          $entityManager->flush();
+          $this->addFlash(
+            'success',
+            'Votre compte a bien été supprimé'
+          );
+        } catch (\Exception $e) {
+          $this->addFlash(
+            'danger',
+            "Une erreur est survenue, nous n'avons pas pu supprimer votre compte"
+          );
+        }
+        return $this->redirectToRoute('root');
+    }
+
+    /**
      * @Route("/blog", name="blog")
      */
     public function blog(): Response
@@ -51,8 +77,6 @@ class CustomerController extends AbstractController
      */
     public function stats(): Response
     {
-        return $this->render('customer/stats.html.twig', [
-            'controller_name' => 'CustomerController',
-        ]);
+        return $this->render('customer/stats.html.twig', []);
     }
 }

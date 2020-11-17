@@ -4,6 +4,7 @@
 
 {% block main %}
   <h2>Vos comptes bancaires</h2>
+  {{ include('messages.html.twig')}}
   <div class="row">
     {% for account in app.user.accounts %}
       <div class="col-12 col-md-6 col-lg-4 my-2">
@@ -21,7 +22,7 @@
 
             </li>
           </ul>
-          <a href="#" class="btn btn-info">Côturer</a>
+          <a href="{{path("account_delete", {id:account.id})}}" class="btn btn-info">Côturer</a>
           <a href="operation.php" class="btn btn-info">Dépot/retrait</a>
           <a href="{{path("single", {id:account.id})}}" class="btn btn-info">Voir</a>
         </div>
