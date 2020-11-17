@@ -1,0 +1,9 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}Ouvrir un compte{% endblock %}
+
+{% block main %}
+  <h2>Ouvrir un nouveau compte</h2>
+  {{include('messages.html.twig')}}
+  {{form(form)}}
+{% endblock %}

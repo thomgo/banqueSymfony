@@ -6,12 +6,15 @@ use App\Repository\AccountRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=AccountRepository::class)
  */
 class Account
 {
+    const TYPES = ["PEL", "PER", "LDD", "Livret A", "Compte courant"];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -21,6 +24,10 @@ class Account
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\GreaterThan(
+     *     value = 50,
+     *     message = "Montant minimum à verser de 50€"
+     * )
      */
     private $amount;
 
@@ -31,6 +38,7 @@ class Account
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\Choice(choices=Account::TYPES, message="Type de compte invalide")
      */
     private $type;
 

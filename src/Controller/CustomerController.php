@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Repository\AccountRepository;
 use App\Entity\Account;
+use App\Form\AccountType;
 
 /**
 *@IsGranted("IS_AUTHENTICATED_FULLY")
@@ -39,7 +41,7 @@ class CustomerController extends AbstractController
     /**
      * @Route("/account/delete/{id}", name="account_delete", requirements={"id"="\d+"})
      */
-    public function account_delete(int $id, AccountRepository $accountRepository): Response
+    public function accountDelete(int $id, AccountRepository $accountRepository): Response
     {
         try {
           $account = $accountRepository->findOneBy([
@@ -60,6 +62,39 @@ class CustomerController extends AbstractController
           );
         }
         return $this->redirectToRoute('root');
+    }
+
+    /**
+     * @Route("/account/new", name="account_new")
+     */
+    public function accountNew(Request $request): Response
+    {
+        $account = new Account();
+        $form = $this->createForm(AccountType::class, $account);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+          $account->setOpeningDate(new \DateTime());
+          $account->setUser($this->getUser());
+          try {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($account);
+            $entityManager->flush();
+            $this->addFlash(
+              'success',
+              'Votre compte a bien été ouvert'
+            );
+            return $this->redirectToRoute('root');
+          } catch (\Exception $e) {
+            $this->addFlash(
+              'danger',
+              "Une erreur est survenue, votre compte n'a pas été enregistré"
+            );
+          }
+
+        }
+        return $this->render('customer/account_new.html.twig', [
+            "form" => $form->createView()
+        ]);
     }
 
     /**
