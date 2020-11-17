@@ -1,11 +1,13 @@
 {% extends 'template.html.twig' %}
 
-{% block title %}{{account.type}}{% endblock %}
+{% block title %}Opération{% endblock %}
 
 {% block main %}
-  <h2>Détails du compte</h2>
+  <h2>Réaliser une opération</h2>
+  {{ include('messages.html.twig')}}
   <div class="row mt-5">
       <div class="col-12 col-md-6 col-lg-4">
+        <h4 class="mb-4">Compte de destination</h4>
         <article class="card">
           <div class="card-header">
             <h5 class="card-title">{{account.type}}</h5>
@@ -17,38 +19,17 @@
               <li class="list-group-item">Solde : {{account.amount}}</li>
               <li class="list-group-item">Date d'ouverture : {{account.openingDate | date("d-m-Y")}}</li>
             </ul>
+            <a href="{{path("single", {id:account.id})}}" class="btn btn-info">Voir</a>
             <a href="{{path("account_delete", {id:account.id})}}" class="btn btn-info">Clôturer</a>
-            <a href="{{path("account_operation", {id:account.id})}}" class="btn btn-info">Dépot/retrait</a>
           </div>
         </article>
       </div>
       <div class="col-12 col-md-6 col-lg-8">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">Id</th>
-              <th scope="col">Label</th>
-              <th scope="col">Date</th>
-              <th scope="col">Type</th>
-              <th scope="col">Montant</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for operation in account.operations %}
-              <tr>
-                <th>{{ operation.id }}</th>
-                <td>{{ operation.label }}</td>
-                <td>{{ operation.registeringDate | date("d-m-Y H:i")}}</td>
-                <td>{{ operation.type }}</td>
-                <td>{{ operation.amount }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+        <h4 class="mb-3">Opération</h4>
+        {{form(form)}}
       </div>
     </div>
-{% endblock %}
+  {% endblock %}
 
 {% block javascripts %}
-  <script src="{{asset('js/layer.js')}}"></script>
 {% endblock %}

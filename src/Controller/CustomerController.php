@@ -9,7 +9,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use App\Repository\AccountRepository;
 use App\Entity\Account;
+use App\Entity\Operation;
 use App\Form\AccountType;
+use App\Form\OperationType;
 
 /**
 *@IsGranted("IS_AUTHENTICATED_FULLY")
@@ -32,6 +34,7 @@ class CustomerController extends AbstractController
      */
     public function single(int $id, AccountRepository $accountRepository): Response
     {
+        // Do not request account without ope
         $account = $accountRepository->getAccount($id, $this->getUser());
         return $this->render('customer/single.html.twig', [
           "account" => $account
@@ -94,6 +97,42 @@ class CustomerController extends AbstractController
         }
         return $this->render('customer/account_new.html.twig', [
             "form" => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/account/operation/{id}", name="account_operation", requirements={"id"="\d+"})
+     */
+    public function accountOperation(int $id, AccountRepository $accountRepository, Request $request): Response
+    {
+          $account = $accountRepository->findOneBy([
+            "id" => $id,
+            "user" => $this->getUser()
+          ]);
+          $operation = new Operation();
+          $form = $this->createForm(OperationType::class, $operation);
+          $form->handleRequest($request);
+          if($form->isSubmitted() && $form->isValid()) {
+            $operation->setRegisteringDate(new \DateTime("now"));
+            $operation->setAccount($account);
+            try{
+              $entityManager = $this->getDoctrine()->getManager();
+              $entityManager->persist($operation);
+              $entityManager->flush();
+              $this->addFlash(
+                'success',
+                'Votre opération a bien été exécutée'
+              );
+            }catch (\Exception $e) {
+              $this->addFlash(
+                'danger',
+                "Une erreur est survenue, nous n'avons pas pu réaliser l'opération"
+              );
+            }
+          }
+        return $this->render("customer/operation.html.twig", [
+          "account" => $account,
+          "form" => $form->createView()
         ]);
     }
 

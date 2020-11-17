@@ -4,12 +4,15 @@ namespace App\Entity;
 
 use App\Repository\OperationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=OperationRepository::class)
  */
 class Operation
 {
+    const TYPES = ["débit", "crédit"];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -24,6 +27,7 @@ class Operation
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\Choice(choices=Operation::TYPES, message="Type d'opération invalide")
      */
     private $type;
 
@@ -103,6 +107,16 @@ class Operation
 
     public function setAccount(?Account $account): self
     {
+        if(!$account->getOperations()->contains($this)) {
+          if($this->type === "crédit") {
+            $amount = $account->getAmount() + $this->amount;
+          }
+          else {
+            $amount = $account->getAmount() - $this->amount;
+            $this->amount = "-" . $this->amount;
+          }
+          $account->setAmount($amount);
+        }
         $this->account = $account;
 
         return $this;

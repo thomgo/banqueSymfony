@@ -23,7 +23,7 @@
             </li>
           </ul>
           <a href="{{path("account_delete", {id:account.id})}}" class="btn btn-info">Côturer</a>
-          <a href="operation.php" class="btn btn-info">Dépot/retrait</a>
+          <a href="{{path("account_operation", {id:account.id})}}" class="btn btn-info">Dépot/retrait</a>
           <a href="{{path("single", {id:account.id})}}" class="btn btn-info">Voir</a>
         </div>
       </article>
