@@ -141,21 +141,19 @@ class CustomerController extends AbstractController
      */
     public function transfer(AccountRepository $accountRepository, Request $request): Response
     {
-          $debitOperation = new Operation();
-          $debitOperation->setType("débit");
-          $creditOperation = new Operation();
-          $creditOperation->setType("crédit");
           $form = $this->createForm(TransferType::class);
           $form->handleRequest($request);
           if($form->isSubmitted() && $form->isValid()) {
+            $debitOperation = new Operation();
+            $debitOperation->setRegisteringDate(new \DateTime("now"));
+            $debitOperation->setLabel($form->getData()["label"]);
+            $debitOperation->setAmount($form->getData()["amount"]);
+            $creditOperation = clone $debitOperation;
+
+            $debitOperation->setType("débit");
+            $creditOperation->setType("crédit");
             $debitAccount = $form->getData()["debitAccount"];
             $creditAccount = $form->getData()["creditAccount"];
-            $debitOperation->setRegisteringDate(new \DateTime("now"));
-            $creditOperation->setRegisteringDate(new \DateTime("now"));
-            $debitOperation->setLabel($form->getData()["label"]);
-            $creditOperation->setLabel($form->getData()["label"]);
-            $debitOperation->setAmount($form->getData()["amount"]);
-            $creditOperation->setAmount($form->getData()["amount"]);
             $debitOperation->setAccount($debitAccount);
             $creditOperation->setAccount($creditAccount);
 
