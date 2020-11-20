@@ -12,6 +12,7 @@ use App\Entity\Account;
 use App\Entity\Operation;
 use App\Form\AccountType;
 use App\Form\OperationType;
+use App\Form\TransferType;
 
 /**
 *@IsGranted("IS_AUTHENTICATED_FULLY")
@@ -131,6 +132,51 @@ class CustomerController extends AbstractController
           }
         return $this->render("customer/operation.html.twig", [
           "account" => $account,
+          "form" => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/transfer", name="transfer")
+     */
+    public function transfer(AccountRepository $accountRepository, Request $request): Response
+    {
+          $debitOperation = new Operation();
+          $debitOperation->setType("débit");
+          $creditOperation = new Operation();
+          $creditOperation->setType("crédit");
+          $form = $this->createForm(TransferType::class);
+          $form->handleRequest($request);
+          if($form->isSubmitted() && $form->isValid()) {
+            $debitAccount = $form->getData()["debitAccount"];
+            $creditAccount = $form->getData()["creditAccount"];
+            $debitOperation->setRegisteringDate(new \DateTime("now"));
+            $creditOperation->setRegisteringDate(new \DateTime("now"));
+            $debitOperation->setLabel($form->getData()["label"]);
+            $creditOperation->setLabel($form->getData()["label"]);
+            $debitOperation->setAmount($form->getData()["amount"]);
+            $creditOperation->setAmount($form->getData()["amount"]);
+            $debitOperation->setAccount($debitAccount);
+            $creditOperation->setAccount($creditAccount);
+
+            try{
+              $entityManager = $this->getDoctrine()->getManager();
+              $entityManager->persist($debitOperation);
+              $entityManager->persist($creditOperation);
+              $entityManager->flush();
+              $this->addFlash(
+                'success',
+                'Votre virement a bien été exécutée',
+              );
+              return $this->redirectToRoute('root');
+            }catch (\Exception $e) {
+              $this->addFlash(
+                'danger',
+                "Une erreur est survenue, nous n'avons pas pu réaliser le virement"
+              );
+            }
+          }
+        return $this->render("customer/transfer.html.twig", [
           "form" => $form->createView()
         ]);
     }

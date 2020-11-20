@@ -1,0 +1,12 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}Opération{% endblock %}
+
+{% block main %}
+  <h2>Réaliser Un virement</h2>
+  {{ include('messages.html.twig')}}
+  {{form(form)}}
+  {% endblock %}
+
+{% block javascripts %}
+{% endblock %}
