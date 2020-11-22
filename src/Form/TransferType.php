@@ -23,12 +23,14 @@ class TransferType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            // Allow the user to choose a full entity for the debit or the credit
             ->add('debitAccount', EntityType::class, [
               "label" => "Compte à débiter",
               "class" => Account::class,
               "choice_label" => function($account) {
                 return $account->getType() . " (" . $account->getAmount() . ")";
               },
+              // Define the accounts to chose from by a request to the user account
               "choices" => $this->security->getUser()->getAccounts()
             ])
             ->add('creditAccount', EntityType::class, [

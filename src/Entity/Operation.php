@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Operation
 {
+    // Same array as in account to store allowed values
     const TYPES = ["débit", "crédit"];
 
     /**
@@ -107,7 +108,9 @@ class Operation
 
     public function setAccount(?Account $account): self
     {
+        // If the account does not already have the operation we need to update the amount
         if(!$account->getOperations()->contains($this)) {
+          // Calculate the new account amount according to the type of the operation
           if($this->type === "crédit") {
             $amount = $account->getAmount() + $this->amount;
           }
@@ -115,10 +118,11 @@ class Operation
             $amount = $account->getAmount() - $this->amount;
             $this->amount = "-" . $this->amount;
           }
+          // Set the new account amount
           $account->setAmount($amount);
         }
+        // Store the account object in the operation object
         $this->account = $account;
-
         return $this;
     }
 }

@@ -20,7 +20,8 @@ class AccountRepository extends ServiceEntityRepository
         parent::__construct($registry, Account::class);
     }
 
-
+    // Custom request with dql to get an accout with the related operations
+    // Avoid to much request on the page
     public function getAccount(int $id, User $user): ?Account
     {
         return $this->createQueryBuilder('a')

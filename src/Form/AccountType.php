@@ -20,6 +20,7 @@ class AccountType extends AbstractType
             ])
             ->add('type', ChoiceType::class, [
               'choices'  => Account::TYPES,
+              // callback function to get the value and not the key from the types array
               'choice_label' => function ($choice, $key, $value) {
                 return $value;
               },

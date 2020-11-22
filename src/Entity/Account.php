@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Account
 {
+    // Store the allowed account type, used in validation and in the form
     const TYPES = ["PEL", "PER", "LDD", "Livret A", "Compte courant"];
 
     /**
