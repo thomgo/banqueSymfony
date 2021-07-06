@@ -29,6 +29,9 @@
     "doctrine/dbal": {
         "version": "2.12.0"
     },
+    "doctrine/deprecations": {
+        "version": "v0.5.3"
+    },
     "doctrine/doctrine-bundle": {
         "version": "2.0",
         "recipe": {
@@ -95,6 +98,9 @@
     },
     "egulias/email-validator": {
         "version": "2.1.23"
+    },
+    "friendsofphp/proxy-manager-lts": {
+        "version": "v1.0.5"
     },
     "fzaninotto/faker": {
         "version": "v1.9.1"
@@ -341,6 +347,9 @@
     "symfony/orm-pack": {
         "version": "v2.0.0"
     },
+    "symfony/password-hasher": {
+        "version": "v5.3.3"
+    },
     "symfony/phpunit-bridge": {
         "version": "4.3",
         "recipe": {
@@ -376,6 +385,9 @@
     },
     "symfony/polyfill-php80": {
         "version": "v1.20.0"
+    },
+    "symfony/polyfill-php81": {
+        "version": "v1.23.0"
     },
     "symfony/process": {
         "version": "v5.1.8"
